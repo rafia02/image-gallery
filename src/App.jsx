@@ -38,7 +38,7 @@ const App = () => {
   };
 
   const handleDragOver = (e, index) => {
-    // console.log(index, items[index])
+
     e.preventDefault();
     const draggedOverItem = items[index];
 
@@ -91,8 +91,8 @@ const App = () => {
 
   const deleteSelectedImages = () => {
     const remainingImages = items.filter((_, index) => !selectedImages.includes(index));
-    setSelectedImages([]); // Clear the selection
-    // You can now update your state or API with the remainingImages.
+    setSelectedImages([]);
+
     console.log('Deleted images:', selectedImages);
     console.log('Remaining images:', remainingImages);
     setItems(remainingImages)
@@ -109,33 +109,30 @@ const App = () => {
 
       <button onClick={deleteSelectedImages} className="font-bold text-lg text-red-600">Delete File</button>
       </div>
-      <ul className="py-4 grid  grid-cols-5 gap-5">
+      <ul className="py-4 grid grid-cols-1 md:grid-cols-5 gap-5">
         {items.map((item, index) => (
           <li
             key={index}
             onDragStart={(e) => handleDragStart(e, index)}
             onDragOver={(e) => handleDragOver(e, index)}
             onDragEnd={handleDragEnd}
-            // onClick={()=> deleteElement(item)}
 
-            className={`border ease-in-out border-gray-300 duration-300 rounded-xl item relative  mb-2 ${
-              index === 0 ? "col-span-2 row-span-2" : "col-span-1 row-span-1"
+
+            className={`border ease-in-out hover:bg-black border-gray-300 duration-300 rounded-xl item relative  mb-2 ${
+              index === 0 ? "md:col-span-2 row-span-2" : "md:col-span-1 md:row-span-1"
             } relative group ${
-              draggedItem === item ? "shadow-md opacity-0" : ""
+              draggedItem === item ? "shadow-md opacity-0 duration-300" : ""
             } transition-opacity relative`}
           >
 
      
             <img
               src={item}
-              className={`rounded-xl   w-full h-full  ${
+              className={`rounded-xl  hover:opacity-50 duration-300  w-full h-full   ${
                 selectedImages.includes(index) ? "opacity-50" : "opacity-100"
               }`}
               alt=""
             ></img>
-
-
-<div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition duration-300"></div>
 
 
             <input
@@ -157,6 +154,12 @@ const App = () => {
         )}
       </ul>
     </div>
+
+
+
+
+
+
 
     // <div>
     //   <h2 className="text-center text-2xl font-bold mt-4">
@@ -189,6 +192,16 @@ const App = () => {
     //     )}
     //   </ul>
     // </div>
+
+
+
+
+
+
+
+
+
+
 
     // <div className='relative'>
     //   <h2>Drag and Drop Reorder</h2>
