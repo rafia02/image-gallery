@@ -186,7 +186,7 @@ const App = () => {
         ))}
 
         {/* new Image  */}
-
+        <label htmlFor="fileInput" className="cursor-pointer">
         <div className="text-center h-[165px] md:h-[218px] border-2 pt-10 md:pt-16 border-gray-300 border-dashed rounded-xl p-6">
 
 
@@ -198,10 +198,11 @@ const App = () => {
             id="fileInput"
             onChange={handleFileChange}
           />
-          <label htmlFor="fileInput" className="cursor-pointer">
+        
             Add Images
-          </label>
+          
         </div>
+        </label>
       </ul>
     </div>
   );
