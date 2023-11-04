@@ -150,7 +150,7 @@ const App = () => {
             className={`main ${
               isDragging ? "border" : "bg-white"
             } transition-opacity border shadow ease-in-out hover:bg-black border-gray-300 duration-500 rounded-xl item relative  mb-2 ${
-              index === 0 ? "col-span-2 row-span-2" : "col-span-1 row-span-1"
+              index === 0 ? "col-span-2 row-span-2 h-full" : "col-span-1 row-span-1  h-[165px] md:h-[218px]"
             } relative group ${
               draggedItem === item ? "shadow-md opacity-0 duration-300" : ""
             } transition-opacity relative`}
@@ -176,7 +176,7 @@ const App = () => {
 
         {/* new Image  */}
 
-        <div className="text-center h-40 md:h-[218px] border-2 pt-10 md:pt-16 border-gray-300 border-dashed rounded-lg p-6">
+        <div className="text-center h-[165px] md:h-[218px] border-2 pt-10 md:pt-16 border-gray-300 border-dashed rounded-lg p-6">
           <img
             class="mx-auto h-8 w-8"
             src="https://www.svgrepo.com/show/357902/image-upload.svg"
