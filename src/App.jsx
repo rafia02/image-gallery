@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import { BsImage } from 'react-icons/bs';
+import { BsImage } from "react-icons/bs";
 
 import img1 from "./images/image-1.webp";
 import img2 from "./images/image-2.webp";
@@ -13,11 +13,6 @@ import img8 from "./images/image-8.webp";
 import img9 from "./images/image-9.webp";
 import img10 from "./images/image-10.jpeg";
 import img11 from "./images/image-11.jpeg";
-
-
-
-
-
 
 const App = () => {
   const [items, setItems] = useState([
@@ -70,7 +65,8 @@ const App = () => {
     setIsDragging(false);
   };
 
-  function handleValue(value, event) {
+  // check box function
+  function handleCheckBox(value, event) {
     if (event.target.checked) {
       setCount(count + 1);
 
@@ -132,12 +128,10 @@ const App = () => {
     <div className="max-w-screen-xl mx-auto px-4 md:px-10">
       <div className="flex border-b border-b-gray-300 py-3 mb-3 items-center justify-between">
         {count > 0 ? (
-          <h2 className=" text-xl font-bold"> 
-          <input
-          checked
-          type="checkbox"
-          className="w-4 h-4 "
-        ></input> {count} File Selected</h2>
+          <h2 className=" text-xl font-bold">
+            <input checked type="checkbox" className="w-4 h-4 "></input> {count}{" "}
+            File Selected
+          </h2>
         ) : (
           <h2 className=" text-xl font-bold">Gallery</h2>
         )}
@@ -161,7 +155,9 @@ const App = () => {
             className={`main ${
               isDragging ? "border" : "bg-white"
             } transition-opacity border shadow ease-in-out hover:bg-black border-gray-300 duration-500 rounded-xl item relative  mb-2 ${
-              index === 0 ? "col-span-2 row-span-2 h-full" : "col-span-1 row-span-1  h-[165px] md:h-[218px]"
+              index === 0
+                ? "col-span-2 row-span-2 h-full"
+                : "col-span-1 row-span-1  h-[165px] md:h-[218px]"
             } relative group ${
               draggedItem === item ? "shadow-md opacity-0 duration-300" : ""
             } transition-opacity relative`}
@@ -176,32 +172,27 @@ const App = () => {
             ></img>
 
             <input
-              onClick={() => handleValue(item, event)}
+              onClick={() => handleCheckBox(item, event)}
               onChange={() => toggleImageSelection(index)}
               checked={selectedImages.includes(index)}
               type="checkbox"
-              className="inp absolute top-3 md:top-6 checkbox left-3 md:left-6 md:w-6 w-4 h-4 md:h-6"
+              className="inp absolute top-3 md:top-6 left-3 md:left-6 md:w-6 w-4 h-4 md:h-6"
             ></input>
           </li>
         ))}
 
-        {/* new Image  */}
+        {/* new Image input */}
         <label htmlFor="fileInput" className="cursor-pointer">
-        <div className="text-center h-[165px] md:h-[218px] border-2 pt-10 md:pt-16 border-gray-300 border-dashed rounded-xl p-6">
-
-
-          <BsImage className="mx-auto text-2xl mb-3"></BsImage>
-
-          <input
-            type="file"
-            className="hidden"
-            id="fileInput"
-            onChange={handleFileChange}
-          />
-        
+          <div className="text-center h-[165px] md:h-[218px] border-2 pt-10 md:pt-16 border-gray-300 border-dashed rounded-xl p-6">
+            <BsImage className="mx-auto text-2xl mb-3"></BsImage>
+            <input
+              type="file"
+              className="hidden"
+              id="fileInput"
+              onChange={handleFileChange}
+            />
             Add Images
-          
-        </div>
+          </div>
         </label>
       </ul>
     </div>
