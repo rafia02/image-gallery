@@ -1,0 +1,15 @@
+.main:hover .inp{
+display: block;
+}
+
+.main .inp{
+    display: none;
+}
+
+.main .inp:checked{
+    display: block;
+}
+
+
+
+

@@ -147,7 +147,7 @@ const App = () => {
             onDragStart={(e) => handleDragStart(e, index)}
             onDragOver={(e) => handleDragOver(e, index)}
             onDragEnd={handleDragEnd}
-            className={` ${
+            className={`main ${
               isDragging ? "border" : "bg-white"
             } transition-opacity border shadow ease-in-out hover:bg-black border-gray-300 duration-500 rounded-xl item relative  mb-2 ${
               index === 0 ? "col-span-2 row-span-2" : "col-span-1 row-span-1"
@@ -169,7 +169,7 @@ const App = () => {
               onChange={() => toggleImageSelection(index)}
               checked={selectedImages.includes(index)}
               type="checkbox"
-              className="absolute top-3 md:top-6 checkbox left-3 md:left-6 md:w-6 w-4 h-4 md:h-6"
+              className="inp absolute top-3 md:top-6 checkbox left-3 md:left-6 md:w-6 w-4 h-4 md:h-6"
             ></input>
           </li>
         ))}
