@@ -15,6 +15,7 @@ import img11 from "./images/image-11.jpeg";
 
 const App = () => {
   const [items, setItems] = useState([
+    img11,
     img1,
     img2,
     img3,
@@ -25,20 +26,26 @@ const App = () => {
     img8,
     img9,
     img10,
-    img11,
   ]);
+
+  const [isDragging, setIsDragging] = useState(true);
+  const [newItems, setNewItems] = useState("");
   const [draggedItem, setDraggedItem] = useState(null);
   const [draggedOverIndex, setDraggedOverIndex] = useState(null);
+  const [count, setCount] = useState(0);
+  const [select, setSelect] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
+  var selectedElements = [];
 
   const handleDragStart = (e, index) => {
     console.log(items[index]);
     setDraggedItem(items[index]);
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("text/plain", index);
+    setIsDragging(true);
   };
 
   const handleDragOver = (e, index) => {
-
     e.preventDefault();
     const draggedOverItem = items[index];
 
@@ -54,13 +61,8 @@ const App = () => {
   const handleDragEnd = () => {
     setDraggedItem(null);
     setDraggedOverIndex(null);
+    setIsDragging(false);
   };
-
-  const [count, setCount] = useState(0);
-
-  var selectedElements = [];
-
-  const [select, setSelect] = useState([]);
 
   function handleValue(value, event) {
     if (event.target.checked) {
@@ -87,141 +89,112 @@ const App = () => {
     }
   };
 
-
-
   const deleteSelectedImages = () => {
-    const remainingImages = items.filter((_, index) => !selectedImages.includes(index));
+    const remainingImages = items.filter(
+      (_, index) => !selectedImages.includes(index)
+    );
     setSelectedImages([]);
 
-    console.log('Deleted images:', selectedImages);
-    console.log('Remaining images:', remainingImages);
-    setItems(remainingImages)
-    setCount(0)
+    console.log("Deleted images:", selectedImages);
+    console.log("Remaining images:", remainingImages);
+    setItems(remainingImages);
+    setCount(0);
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
+    const URL =
+      "https://api.imgbb.com/1/upload?&key=4d5a64efec46b0e4ba427206e6bcef01";
+    const data = fetch(URL, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const newImg = data.data.url;
+        setItems([...items, newImg]);
+      })
+      .catch((e) => console.error(e));
+    setSelectedFile(file);
+  };
+
+  // console.log(selectedFile);
+
   return (
+    <div className="px-4 md:px-10">
+      <div className="flex items-center justify-between">
+        {count > 0 ? (
+          <h2 className=" text-xl font-bold mt-4">{count} File Selected</h2>
+        ) : (
+          <h2 className=" text-xl font-bold mt-4">Gallery</h2>
+        )}
 
-    <div className="px-10">
-      <div className="flex justify-between">
-      <h2 className=" text-xl font-bold mt-4">
-         {count} File Selected 
-      </h2>
-
-      <button onClick={deleteSelectedImages} className="font-bold text-lg text-red-600">Delete File</button>
+        {count > 0 && (
+          <button
+            onClick={deleteSelectedImages}
+            className="font-bold text-lg mt-4 text-red-600"
+          >
+            Delete File
+          </button>
+        )}
       </div>
-      <ul className="py-4 grid grid-cols-1 md:grid-cols-5 gap-5">
+      <ul className="py-4 grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-5">
         {items.map((item, index) => (
           <li
             key={index}
             onDragStart={(e) => handleDragStart(e, index)}
             onDragOver={(e) => handleDragOver(e, index)}
             onDragEnd={handleDragEnd}
-
-
-            className={`border ease-in-out hover:bg-black border-gray-300 duration-300 rounded-xl item relative  mb-2 ${
-              index === 0 ? "md:col-span-2 row-span-2" : "md:col-span-1 md:row-span-1"
+            className={` ${
+              isDragging ? "border" : "bg-white"
+            } transition-opacity border shadow ease-in-out hover:bg-black border-gray-300 duration-500 rounded-xl item relative  mb-2 ${
+              index === 0 ? "col-span-2 row-span-2" : "col-span-1 row-span-1"
             } relative group ${
               draggedItem === item ? "shadow-md opacity-0 duration-300" : ""
             } transition-opacity relative`}
           >
-
-     
             <img
               src={item}
-              className={`rounded-xl  hover:opacity-50 duration-300  w-full h-full   ${
+              draggable
+              className={`rounded-xl bg-white hover:opacity-50 duration-300  w-full h-full   ${
                 selectedImages.includes(index) ? "opacity-50" : "opacity-100"
               }`}
               alt=""
             ></img>
-
 
             <input
               onClick={() => handleValue(item, event)}
               onChange={() => toggleImageSelection(index)}
               checked={selectedImages.includes(index)}
               type="checkbox"
-              className="absolute top-6 checkbox left-6 w-6 h-6"
+              className="absolute top-3 md:top-6 checkbox left-3 md:left-6 md:w-6 w-4 h-4 md:h-6"
             ></input>
           </li>
         ))}
-        {draggedOverIndex !== null && (
-          <li
-            className="bg-transparent p-2 mb-2 h-8"
-            style={{ visibility: "hidden" }}
-          >
-            &nbsp; {/* Placeholder item */}
-          </li>
-        )}
+
+        {/* new Image  */}
+
+        <div className="text-center h-40 md:h-[218px] border-2 pt-10 md:pt-16 border-gray-300 border-dashed rounded-lg p-6">
+          <img
+            class="mx-auto h-8 w-8"
+            src="https://www.svgrepo.com/show/357902/image-upload.svg"
+            alt=""
+          ></img>
+
+          <input
+            type="file"
+            className="hidden"
+            id="fileInput"
+            onChange={handleFileChange}
+          />
+          <label htmlFor="fileInput" className="cursor-pointer   rounded-md">
+            Drag and drop
+          </label>
+        </div>
       </ul>
     </div>
-
-
-
-
-
-
-
-    // <div>
-    //   <h2 className="text-center text-2xl font-bold mt-4">
-    //     Drag and Drop Reorder
-    //   </h2>
-    //   <ul className="py-4 grid  grid-cols-5 gap-5">
-    //     {items.map((item, index) => (
-    //       <li
-    //         key={index}
-    //         draggable
-    //         onDragStart={(e) => handleDragStart(e, index)}
-    //         onDragOver={(e) => handleDragOver(e, index)}
-    //         onDragEnd={handleDragEnd}
-    //         className={`border ease-in-out border-black duration-300 p-2 mb-2 ${
-    //           index === 0 ? "col-span-2 row-span-2" : "col-span-1 row-span-1"
-    //         } relative group ${
-    //           draggedItem === item ? "shadow-md opacity-0" : ""
-    //         } transition-opacity`}
-    //       >
-    //         <img src={item} alt=""></img>
-    //       </li>
-    //     ))}
-    //     {draggedOverIndex !== null && (
-    //       <li
-    //         className="bg-transparent p-2 mb-2 h-8"
-    //         style={{ visibility: "hidden" }}
-    //       >
-    //         &nbsp; {/* Placeholder item */}
-    //       </li>
-    //     )}
-    //   </ul>
-    // </div>
-
-
-
-
-
-
-
-
-
-
-
-    // <div className='relative'>
-    //   <h2>Drag and Drop Reorder</h2>
-    //   <ul className='grid  grid-cols-5 gap-5'>
-    //     {items.map((item, index) => (
-    //       <li
-    //       className={`bg-blue-100 p-2 mb-2 ${
-    //         draggedItem === item ? 'opacity-0' : ''
-    //       } transition-opacity`}
-    //         key={index}
-    //         draggable
-    //         onDragStart={(e) => handleDragStart(e, index)}
-    //         onDragOver={(e) => handleDragOver(e, index)}
-    //         onDragEnd={handleDragEnd}
-    //       >
-    //         <img src={item} alt=''></img>
-    //       </li>
-    //     ))}
-    //   </ul>
-    // </div>
   );
 };
 
