@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
+import { BsImage } from 'react-icons/bs';
 
 import img1 from "./images/image-1.webp";
 import img2 from "./images/image-2.webp";
@@ -12,6 +13,11 @@ import img8 from "./images/image-8.webp";
 import img9 from "./images/image-9.webp";
 import img10 from "./images/image-10.jpeg";
 import img11 from "./images/image-11.jpeg";
+
+
+
+
+
 
 const App = () => {
   const [items, setItems] = useState([
@@ -123,24 +129,29 @@ const App = () => {
   // console.log(selectedFile);
 
   return (
-    <div className="px-4 md:px-10">
-      <div className="flex items-center justify-between">
+    <div className="max-w-screen-xl mx-auto px-4 md:px-10">
+      <div className="flex border-b border-b-gray-300 py-3 mb-3 items-center justify-between">
         {count > 0 ? (
-          <h2 className=" text-xl font-bold mt-4">{count} File Selected</h2>
+          <h2 className=" text-xl font-bold"> 
+          <input
+          checked
+          type="checkbox"
+          className="w-4 h-4 "
+        ></input> {count} File Selected</h2>
         ) : (
-          <h2 className=" text-xl font-bold mt-4">Gallery</h2>
+          <h2 className=" text-xl font-bold">Gallery</h2>
         )}
 
         {count > 0 && (
           <button
             onClick={deleteSelectedImages}
-            className="font-bold text-lg mt-4 text-red-600"
+            className="font-bold text-lg  text-red-600"
           >
             Delete File
           </button>
         )}
       </div>
-      <ul className="py-4 grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-5">
+      <ul className="py-4 grid grid-cols-2 md:grid-cols-5 gap-y-3 md:gap-y-5 gap-x-3 md:gap-x-7">
         {items.map((item, index) => (
           <li
             key={index}
@@ -176,12 +187,10 @@ const App = () => {
 
         {/* new Image  */}
 
-        <div className="text-center h-[165px] md:h-[218px] border-2 pt-10 md:pt-16 border-gray-300 border-dashed rounded-lg p-6">
-          <img
-            class="mx-auto h-8 w-8"
-            src="https://www.svgrepo.com/show/357902/image-upload.svg"
-            alt=""
-          ></img>
+        <div className="text-center h-[165px] md:h-[218px] border-2 pt-10 md:pt-16 border-gray-300 border-dashed rounded-xl p-6">
+
+
+          <BsImage className="mx-auto text-2xl mb-3"></BsImage>
 
           <input
             type="file"
@@ -189,8 +198,8 @@ const App = () => {
             id="fileInput"
             onChange={handleFileChange}
           />
-          <label htmlFor="fileInput" className="cursor-pointer   rounded-md">
-            Drag and drop
+          <label htmlFor="fileInput" className="cursor-pointer">
+            Add Images
           </label>
         </div>
       </ul>
